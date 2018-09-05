@@ -4,6 +4,7 @@ import (
 	"path"
 	"path/filepath"
 
+	"github.com/francodev/todo/handlers"
 	"github.com/gin-gonic/gin"
 )
 
@@ -24,7 +25,7 @@ func main() {
 
 	})
 
-	r.GET("/todo", handlers.GetTodoListHanderler)
+	r.GET("/todo", handlers.GetTodoListHandler)
 	r.POST("/todo", handlers.AddTodoHandler)
 	r.DELETE("/todo/:id", handlers.DeleteTodoHandler)
 	r.PUT("/todo", handlers.CompleteTodoHandler)

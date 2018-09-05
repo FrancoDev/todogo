@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/francodev/todo"
+	"github.com/francodev/todo/todo"
 	"github.com/gin-gonic/gin"
 )
 
