@@ -13,10 +13,13 @@ var (
 	once sync.Once
 )
 
+// initializing th earray of to-do items
+// ensures this will only run once
 func init() {
 	once.Do(initialiseList)
 }
 
+//contains a list of Todo objects
 func initialiseList() {
 	list = []Todo{}
 }
@@ -30,6 +33,7 @@ type Todo struct {
 }
 
 // Get retrieves all elements from the todo list
+// Capital letter so public(open to other packages)
 func Get() []Todo {
 	return list
 }
@@ -37,7 +41,7 @@ func Get() []Todo {
 // Add will add a new todo based on a message
 func Add(message string) string {
 	t := newTodo(message)
-	mtx.Lock()
+	mtx.Lock() // lock before appending as multiple could happen at same time
 	list = append(list, t)
 	mtx.Unlock()
 	return t.ID
@@ -72,6 +76,7 @@ func newTodo(msg string) Todo {
 	}
 }
 
+//find index of todo-item in list of all todo-items
 func findTodoLocation(id string) (int, error) {
 	mtx.RLock()
 	defer mtx.RUnlock()
