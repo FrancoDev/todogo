@@ -1,23 +1,24 @@
 package main
 
 import (
+	"log"
+	"net/http"
+	"os"
 	"path"
 	"path/filepath"
-	"log"
-	"os"
-	"net/http"
-	
+
 	"github.com/francodev/todo/handlers"
-	
+
 	"github.com/auth0-community/go-auth0"
-    "github.com/gin-gonic/gin"
-    jose "gopkg.in/square/go-jose.v2"
+	"github.com/gin-gonic/gin"
+	jose "gopkg.in/square/go-jose.v2"
 )
 
 var (
 	audience string
-	domain string
+	domain   string
 )
+
 func main() {
 	setAuth0Variables()
 	r := gin.Default()
@@ -37,16 +38,16 @@ func main() {
 	})
 
 	authorized := r.Group("/")
-    authorized.Use(authRequired())
-    authorized.GET("/todo", handlers.GetTodoListHandler)
-    authorized.POST("/todo", handlers.AddTodoHandler)
-    authorized.DELETE("/todo/:id", handlers.DeleteTodoHandler)
-    authorized.PUT("/todo", handlers.CompleteTodoHandler)
+	authorized.Use(authRequired())
+	authorized.GET("/todo", handlers.GetTodoListHandler)
+	authorized.POST("/todo", handlers.AddTodoHandler)
+	authorized.DELETE("/todo/:id", handlers.DeleteTodoHandler)
+	authorized.PUT("/todo", handlers.CompleteTodoHandler)
 
-    err := r.Run(":3000")
-    if err != nil {
-        panic(err)
-    }
+	err := r.Run(":3000")
+	if err != nil {
+		panic(err)
+	}
 
 }
 func setAuth0Variables() {
@@ -79,4 +80,3 @@ func terminateWithError(statusCode int, message string, c *gin.Context) {
 	c.JSON(statusCode, gin.H{"error": message})
 	c.Abort()
 }
-
